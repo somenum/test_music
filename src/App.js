@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from "react";
-import './App.css';
+import "./App.css";
 import Form from "./components/Form/Form";
 import axios from "axios";
 import ElementItem from "./components/ElementItem/ElementItem";
-
 
 
 const App = () => {
@@ -11,14 +10,15 @@ const App = () => {
     const [list, setList] = useState(initialArray);
 
     const onChangeHandler = (e) => {
-        axios.get('https://itunes.apple.com/search?term='+e.target.value.toLowerCase())
-            .then( (response) => {
+        axios.get("https://itunes.apple.com/search?term=" + e.target.value.toLowerCase())
+            .then((response) => {
                 const songs = response.data.results.map((item) => {
                     return item.collectionName;
-                }).sort().slice(0,5)
+                }).sort().slice(0, 5)
                 console.log(songs);
+                setList(songs)
             })
-            .catch( (error) => {
+            .catch((error) => {
                 console.log(error);
             });
     }
@@ -37,14 +37,13 @@ const App = () => {
     }, [list])
 
 
-
     return (
         <div className="App">
             <Form onChange={onChangeHandler} placeholder="Search Band"/>
             <div className="content">
                 <ol className="list">
-                    { list.length && list.map((item) => (
-                        <li key={item + item.id} className="list__item">
+                    {list.length && list.map((item) => (
+                        <li key={item + Math.random()} className="list__item">
                             <ElementItem text={item}/>
                         </li>
                     ))}
