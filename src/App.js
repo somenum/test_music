@@ -1,16 +1,16 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
+import _debounce from 'lodash/debounce';
 import "./App.css";
 import Form from "./components/Form/Form";
 import axios from "axios";
-import ElementItem from "./components/ElementItem/ElementItem";
 
 
 const App = () => {
     const initialArray = ['A', 'B', 'C', 'D', 'E']
     const [list, setList] = useState(initialArray);
 
-    const onChangeHandler = (e) => {
-        axios.get("https://itunes.apple.com/search?term=" + e.target.value.toLowerCase())
+    const handleDebounceFn = (inputValue) => {
+        axios.get("https://itunes.apple.com/search?term=" + inputValue.toLowerCase())
             .then((response) => {
                 const songs = response.data.results.map((item) => {
                     return item.collectionName;
@@ -21,6 +21,11 @@ const App = () => {
                 console.log(error);
             });
     }
+
+    const debounceFn = useCallback(_debounce(handleDebounceFn, 1000), []);
+    function onChangeHandler (event) {
+        debounceFn(event.target.value);
+    };
 
     const changeArr = () => {
         let arr = [...list];
@@ -43,7 +48,11 @@ const App = () => {
                 <ol className="list">
                     {list.length && list.map((item) => (
                         <li key={item + Math.random()} className="list__item">
-                            <ElementItem text={item}/>
+                            <div
+                                className="item__container"
+                            >
+                                {item}
+                            </div>
                         </li>
                     ))}
                 </ol>
