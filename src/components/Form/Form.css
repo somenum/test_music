@@ -1,0 +1,10 @@
+.form {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form__input {
+    border-radius: 5px;
+    width: 100%;
+
+}
