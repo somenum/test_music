@@ -15,7 +15,6 @@ const App = () => {
                 const songs = response.data.results.map((item) => {
                     return item.collectionName;
                 }).sort().slice(0, 5)
-                console.log(songs);
                 setList(songs)
             })
             .catch((error) => {
